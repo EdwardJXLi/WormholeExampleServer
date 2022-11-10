@@ -6,6 +6,7 @@
 import argparse
 import cv2
 import numpy as np
+import math
 
 from wormhole import Wormhole
 from wormhole.streamer import MJPEGStreamer
@@ -14,7 +15,11 @@ from wormhole.utils import (
     render_fraps_fps, 
     render_full_fps,
     render_debug_info, 
-    render_watermark)
+    render_watermark,
+    draw_overlay,
+    draw_transparent_overlay,
+    blend_frames,
+    draw_text)
 
 # Move message rendering to another file to save space
 from render_messages import render_welcome_message
@@ -93,7 +98,8 @@ def main():
     
     # Here, we create a basic filter
     def grayscale_filter(video):
-        cv2.cvtColor(video._frame, cv2.COLOR_BGR2GRAY)
+        video._frame = cv2.cvtColor(video._frame, cv2.COLOR_BGR2GRAY)
+        video._frame = cv2.cvtColor(video._frame, cv2.COLOR_GRAY2BGR)  # Make sure image is still 3 channel
     
     # then, we create a realtime "Soft Copy" of the original video
     # so that any modifications dont modify the original
@@ -125,8 +131,62 @@ def main():
     
     # We first create a hard copy of the video with half the resolution
     # This makes it so that the video is somewhat useable.
-    postprocessing_test_video = HardCopy(video, video.width//2, video.height//2, frame_modifiers = [circle_video_filter, wavy_image_filter, render_debug_info, render_fraps_fps]) 
+    postprocessing_test_video = HardCopy(
+        video, 
+        video.width//2, 
+        video.height//2, 
+        frame_modifiers = [
+            circle_video_filter, 
+            wavy_image_filter, 
+            render_debug_info, 
+            render_fraps_fps
+        ]) 
     server.create_stream(MJPEGStreamer, postprocessing_test_video, '/postprocessing')
+    
+    """
+    Video Overlaying Demo
+    """
+    
+    # In this example, we are drawing two other live video feeds on top of the original video.
+    # This is done by creating a new video stream that is a hard copy of the original video.
+    # and adding frame modifiers that will draw on top of the original video.
+    
+    # Here is a helper function that will draw a video feed on top of the original video.
+    def render_overlay_feeds(video):
+        # In this example, we will the grayscale and inverted video feeds
+        grayscale_frame = grayscale_video.get_frame()
+        inverted_frame = inverted_video.get_frame()
+        
+        # First, overlay the grayscale video with a moving offset
+        draw_overlay(
+            video._frame, 
+            grayscale_frame, 
+            (video.width//4 + int(math.sin(video.frame_controller.frames_rendered/10)*video.width//8), 32), 
+            (video.width//4, video.height//4))
+        
+        # Draw Description Text
+        draw_text(video._frame, "Moving Video Demo", (video.width//4, 200), font_size=2)
+        
+        # Then, draw the inverted video with a transparency
+        # Render the watermark onto a copy of the frame
+        transparent_frame = draw_overlay(video._frame.copy(), inverted_frame, (video.width//4, video.height//2), (video.width//4, video.height//4))
+
+        # Render the watermark with the new width and height
+        blend_frames(video._frame, transparent_frame, transparency=0.2)
+        
+        # Draw Description Text
+        draw_text(video._frame, "Transparent Video Demo", (video.width//4, 600), font_size=2)
+
+    # Here we create a hard copy of the original video
+    overlay_video = HardCopy(
+        video, 
+        video.width, 
+        video.height, 
+        frame_modifiers = [
+            render_overlay_feeds,
+            render_debug_info, 
+            render_fraps_fps])
+    server.create_stream(MJPEGStreamer, overlay_video, '/overlay')
     
     # Join server thread to keep process alive
     server.join()
