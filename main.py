@@ -10,14 +10,13 @@ import math
 
 from wormhole import Wormhole
 from wormhole.streamer import MJPEGStreamer
-from wormhole.video import FileVideo, SoftCopy, HardCopy
+from wormhole.video import FileVideo, SoftCopy, HardCopy, CustomVideo
 from wormhole.utils import (
     render_fraps_fps, 
     render_full_fps,
     render_debug_info, 
     render_watermark,
     draw_overlay,
-    draw_transparent_overlay,
     blend_frames,
     draw_text)
 
@@ -187,6 +186,38 @@ def main():
             render_debug_info, 
             render_fraps_fps])
     server.create_stream(MJPEGStreamer, overlay_video, '/overlay')
+    
+    """
+    Video Proxying Demo
+    """
+    
+    # TODO
+    
+    """
+    Custom Video Demo
+    """
+    
+    # Here, we dont use any video source. We generate new image frames during runtime!
+    
+    # Here is a helper function that will generate a new image frame
+    def frame_generator(video):
+        pass
+
+    custom_video = CustomVideo(500, 500, 100, frame_generator)
+    server.create_stream(MJPEGStreamer, custom_video, '/custom')
+    
+    """
+    Error Handling Demo
+    """
+    
+    # Here, we dont use any video source. We generate new image frames during runtime!
+    
+    # Here is a helper function that will generate a new image frame
+    def error_generator(video):
+        raise Exception("This Is A Test Error!")
+
+    error_video = CustomVideo(1920, 804, 100, error_generator)
+    server.create_stream(MJPEGStreamer, error_video, '/error')
     
     # Join server thread to keep process alive
     server.join()
