@@ -149,8 +149,8 @@ def main():
         video.width//2, 
         video.height//2, 
         frame_modifiers = [
-            # circle_video_filter, 
-            # wavy_image_filter, 
+            circle_video_filter, 
+            wavy_image_filter, 
             render_debug_info, 
             render_fraps_fps,
             render_advanced_message
@@ -222,19 +222,19 @@ def main():
     # Here, we dont use any video source. We generate new image frames during runtime!
     
     # Here is a helper function that will generate a new image frame
-    def frame_generator(video):
-        new_frame = np.zeros((video.height, video.width, 3), np.uint8)
-        new_frame[:] = (video.frame_controller.frames_rendered % 196, 255, 255)
-        new_frame = cv2.cvtColor(new_frame, cv2.COLOR_HSV2BGR)
+    # def frame_generator(video):
+    #     new_frame = np.zeros((video.height, video.width, 3), np.uint8)
+    #     new_frame[:] = (video.frame_controller.frames_rendered % 196, 255, 255)
+    #     new_frame = cv2.cvtColor(new_frame, cv2.COLOR_HSV2BGR)
         
-        video.set_frame(new_frame)
+    #     video.set_frame(new_frame)
 
-    custom_video = CustomVideo(1920, 804, 100, frame_generator, frame_modifiers = [
-        render_debug_info, 
-        render_fraps_fps,
-        render_custom_message
-    ])
-    server.create_stream(MJPEGStreamer, custom_video, '/custom')
+    # custom_video = CustomVideo(1920, 804, 100, frame_generator, frame_modifiers = [
+    #     render_debug_info, 
+    #     render_fraps_fps,
+    #     render_custom_message
+    # ])
+    # server.create_stream(MJPEGStreamer, custom_video, '/custom')
     
     """
     Error Handling Demo
