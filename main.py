@@ -21,7 +21,14 @@ from wormhole.utils import (
     draw_text)
 
 # Move message rendering to another file to save space
-from render_messages import render_welcome_message
+from render_messages import (
+    render_welcome_message,
+    render_low_res_message,
+    render_grayscale_message,
+    render_inverted_message,
+    render_advanced_message,
+    render_overlay_message
+)
 
 
 def main():
@@ -56,7 +63,10 @@ def main():
     # This creates an alias to the "managed" default video stream.
     server.create_stream(MJPEGStreamer, server.managed_streams.get("default", (None,))[0], '/')
     
-    # Load Video From File
+    """
+    Load Video From File
+    """
+     
     # The reason why we dont use this above is because
     # I'm trying to show the basic server.stream method
     # of streaming a video file. Everything down here 
@@ -81,12 +91,12 @@ def main():
     # the original video.
     # We use this to create a low resolution and frame rate copy of
     # the original stream.
-    lowres_video = HardCopy(video, 640, 360, max_fps=1, frame_modifiers = [render_full_fps, render_fraps_fps])
+    lowres_video = HardCopy(video, 640, 360, max_fps=1, frame_modifiers = [render_full_fps, render_fraps_fps, render_low_res_message])
     
     # Here, we stream with custom imencode configs passed to the MJPEGStreamer.
     # In this instance, we are significantly dropping the quality of the video
     # to add to the crusty:tm: feel.
-    server.create_stream(MJPEGStreamer, lowres_video, '/lowres', imencode_config=[cv2.IMWRITE_JPEG_QUALITY, 5])
+    server.create_stream(MJPEGStreamer, lowres_video, '/lowres', imencode_config=[cv2.IMWRITE_JPEG_QUALITY, 50])
     
     """
     Postprocessed Video Streams - Grayscale
@@ -104,7 +114,7 @@ def main():
     # so that any modifications dont modify the original
     # Soft copies are realtime copies of the original video using
     # frame subscribes and publishers. This is better for light weight video modifications
-    grayscale_video = SoftCopy(video, frame_modifiers = [render_debug_info, render_fraps_fps, grayscale_filter])
+    grayscale_video = SoftCopy(video, frame_modifiers = [render_debug_info, render_fraps_fps, grayscale_filter, render_grayscale_message])
     server.create_stream(MJPEGStreamer, grayscale_video, '/grayscale')
     
     """
@@ -120,6 +130,7 @@ def main():
     server.create_stream(MJPEGStreamer, inverted_video, '/inverted')
     # This filter is added in realtime!
     inverted_video.add_frame_modifier(invert_filter)
+    inverted_video.add_frame_modifier(render_inverted_message)
     
     """
     Advanced Postprocessed Video Streams
@@ -135,10 +146,11 @@ def main():
         video.width//2, 
         video.height//2, 
         frame_modifiers = [
-            circle_video_filter, 
-            wavy_image_filter, 
+            # circle_video_filter, 
+            # wavy_image_filter, 
             render_debug_info, 
-            render_fraps_fps
+            render_fraps_fps,
+            render_advanced_message
         ]) 
     server.create_stream(MJPEGStreamer, postprocessing_test_video, '/postprocessing')
     
@@ -164,17 +176,17 @@ def main():
             (video.width//4, video.height//4))
         
         # Draw Description Text
-        draw_text(video._frame, "Moving Video Demo", (video.width//4, 200), font_size=2)
+        draw_text(video._frame, "Moving Video Demo", (video.width//4, 300), font_size=2)
         
         # Then, draw the inverted video with a transparency
         # Render the watermark onto a copy of the frame
-        transparent_frame = draw_overlay(video._frame.copy(), inverted_frame, (video.width//4, video.height//2), (video.width//4, video.height//4))
+        transparent_frame = draw_overlay(video._frame.copy(), inverted_frame, (video.width//4, 440), (video.width//4, video.height//4))
 
         # Render the watermark with the new width and height
         blend_frames(video._frame, transparent_frame, transparency=0.2)
         
         # Draw Description Text
-        draw_text(video._frame, "Transparent Video Demo", (video.width//4, 600), font_size=2)
+        draw_text(video._frame, "Transparent Video Demo", (video.width//4, 700), font_size=2)
 
     # Here we create a hard copy of the original video
     overlay_video = HardCopy(
@@ -184,8 +196,15 @@ def main():
         frame_modifiers = [
             render_overlay_feeds,
             render_debug_info, 
-            render_fraps_fps])
+            render_fraps_fps,
+            render_overlay_message])
     server.create_stream(MJPEGStreamer, overlay_video, '/overlay')
+    
+    """
+    Webcam Demo
+    """
+    
+    # TODO
     
     """
     Video Proxying Demo
@@ -201,9 +220,13 @@ def main():
     
     # Here is a helper function that will generate a new image frame
     def frame_generator(video):
-        pass
+        new_frame = np.zeros((video.height, video.width, 3), np.uint8)
+        new_frame[:] = (video.frame_controller.frames_rendered % 196, 255, 255)
+        new_frame = cv2.cvtColor(new_frame, cv2.COLOR_HSV2BGR)
+        
+        video.set_frame(new_frame)
 
-    custom_video = CustomVideo(500, 500, 100, frame_generator)
+    custom_video = CustomVideo(1920, 804, 100, frame_generator, frame_modifiers = [render_debug_info, render_fraps_fps])
     server.create_stream(MJPEGStreamer, custom_video, '/custom')
     
     """
