@@ -27,7 +27,10 @@ from render_messages import (
     render_grayscale_message,
     render_inverted_message,
     render_advanced_message,
-    render_overlay_message
+    render_overlay_message,
+    render_webcam_message,
+    render_proxy_message,
+    render_custom_message
 )
 
 
@@ -226,19 +229,25 @@ def main():
         
         video.set_frame(new_frame)
 
-    custom_video = CustomVideo(1920, 804, 100, frame_generator, frame_modifiers = [render_debug_info, render_fraps_fps])
+    custom_video = CustomVideo(1920, 804, 100, frame_generator, frame_modifiers = [
+        render_debug_info, 
+        render_fraps_fps,
+        render_custom_message
+    ])
     server.create_stream(MJPEGStreamer, custom_video, '/custom')
     
     """
     Error Handling Demo
     """
     
-    # Here, we dont use any video source. We generate new image frames during runtime!
-    
-    # Here is a helper function that will generate a new image frame
+    # Things don't always go to plan! Here is an example of an error while generating frames
     def error_generator(video):
-        raise Exception("This Is A Test Error!")
+        raise Exception("This Is A Test Error! "
+                        "This error is intentional and is used to demonstrate error handling. "
+                        "In this example, Wormhole gracefully captures the error "
+                        "and continues processing all other video streams with no isses.")
 
+    # Wormhole gracefully handles such error and continues on with all other streams
     error_video = CustomVideo(1920, 804, 100, error_generator)
     server.create_stream(MJPEGStreamer, error_video, '/error')
     

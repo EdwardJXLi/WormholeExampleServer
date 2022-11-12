@@ -61,6 +61,9 @@ def render_welcome_message(video):
         " | Static Webpage Demo: [ /static ]",
         " | Source Code: [ /source ] or [ /github ]",
         "",
+        "All streams shown above are processed, rendered, and served",
+        "all from the same Wormhole instance.",
+        "",
         "================================"
     ])
 
@@ -273,6 +276,59 @@ def render_overlay_message(video):
         "video manipulation libraries to achieve, but today,",
         "all this powerful video manipulation technology is available",
         "in just a dozen lines of code with the power of Wormhole.",
+        "",
+        "Go to [ / ] to check out other examples!",
+        "",
+        "========================================"
+    ])
+
+def render_webcam_message(video):
+    """
+    Renders description for the webcam video feed.
+    """
+    pass
+
+def render_proxy_message(video):
+    """
+    Renders description for the proxied video feed.
+    """
+    pass
+    
+def render_custom_message(video):
+    """
+    Renders description for the custom video feed.
+    """
+    
+    # Constants
+    BOX_MARGIN = 10
+    BOX_WIDTH = 540
+    BOX_HEIGHT = 280
+    BOX_X_OFFSET = video.width-640
+    BOX_Y_OFFSET = 24
+
+    # Render a dark box around the message
+    dark_rectangle = np.copy(video._frame)
+    cv2.rectangle(
+        dark_rectangle, 
+        (BOX_X_OFFSET-BOX_MARGIN, BOX_Y_OFFSET-BOX_MARGIN),
+        (BOX_X_OFFSET+BOX_WIDTH+BOX_MARGIN, BOX_Y_OFFSET+BOX_HEIGHT+BOX_MARGIN),
+        (0,0,0), -1)
+    blend_frames(video._frame, dark_rectangle)
+    
+    # Render The Text
+    from wormhole.version import __version__
+    draw_multiline_text(video._frame, video.width, video.height, (BOX_X_OFFSET, BOX_Y_OFFSET), [
+        "========================================",
+        "> Wormhole Custom Video Demo <",
+        "========================================",
+        "",
+        "Wormhole not only works with just file or camera streams,",
+        "but also custom-rendered frames. In this simple demo,",
+        "we cycle through different coloured background.",
+        "",
+        "All of these frames are being rendered in real-time without",
+        "a reference video source. This shows that Wormhole works great",
+        "with dynamic video content generated on the fly!",
         "",
         "Go to [ / ] to check out other examples!",
         "",
