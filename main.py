@@ -251,6 +251,29 @@ def main():
     error_video = CustomVideo(1920, 804, 100, error_generator)
     server.create_stream(MJPEGStreamer, error_video, '/error')
     
+    """
+    Static Webpage Demo
+    """
+    
+    def serve_static():
+        return "This is just a plain static page hosted with Flask. " \
+               "The only difference is that this is served through the " \
+               "Wormhole network server."
+
+    server.controller.add_route("/static", serve_static, methods=["GET"], strict_slashes=False)
+    
+    """
+    Redirect to Github Page
+    """
+    
+    from flask import redirect
+    
+    def serve_source():
+        return redirect("https://github.com/EdwardJXLi/Wormhole")
+
+    server.controller.add_route("/source", serve_source, methods=["GET"], strict_slashes=False)
+    server.controller.add_route("/github", serve_source, methods=["GET"], strict_slashes=False)
+    
     # Join server thread to keep process alive
     server.join()
 
