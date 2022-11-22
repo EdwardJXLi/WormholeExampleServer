@@ -43,9 +43,6 @@ def render_welcome_message(video):
         "> with fully interactive elements and more.",
         "> Visit the github for more information!",
         "",
-        "In the meanwhile, these following links",
-        "showcase the capabilities of Wormhole:",
-        "",
         ">> Demo Links <<",
         "(Add these to the end of the current url)",
         " | Original Source Material: [ /original ]",
@@ -62,9 +59,14 @@ def render_welcome_message(video):
         " | Source Code: [ /source ] or [ /github ]",
         "",
         "All streams shown above are processed, rendered, and served",
-        "all from the same Wormhole instance.",
+        "from the same Wormhole instance.",
         "",
-        "================================"
+        "========================================",
+        "[Video Attribution]",
+        "Andy Goralczyk / Blender Foundation",
+        "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
+        "via Wikimedia Commons",
+        "========================================"
     ])
 
     
@@ -105,6 +107,10 @@ def render_low_res_message(video):
         "resized and reformatted",
         "to fit a low bitrate.",
         "",
+        "================",
+        "[Video Attribution]",
+        "Andy Goralczyk", 
+        "Blender Foundation",
         "================"
     ])
 
@@ -116,7 +122,7 @@ def render_grayscale_message(video):
     # Constants
     BOX_MARGIN = 10
     BOX_WIDTH = 540
-    BOX_HEIGHT = 280
+    BOX_HEIGHT = 380
     BOX_X_OFFSET = video.width-640
     BOX_Y_OFFSET = 24
 
@@ -146,6 +152,11 @@ def render_grayscale_message(video):
         "",
         "Go to [ / ] to check out other examples!",
         "",
+        "========================================",
+        "[Video Attribution]",
+        "Andy Goralczyk / Blender Foundation",
+        "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
+        "via Wikimedia Commons",
         "========================================"
     ])
     # This demo shows Wormhole's realtime video manipulation using the frame_modifiers feature. In this case, frames from the source video are being manipulated in realtime to be grayscale.
@@ -159,7 +170,7 @@ def render_inverted_message(video):
     # Constants
     BOX_MARGIN = 10
     BOX_WIDTH = 540
-    BOX_HEIGHT = 200
+    BOX_HEIGHT = 280
     BOX_X_OFFSET = video.width-640
     BOX_Y_OFFSET = 24
 
@@ -184,6 +195,11 @@ def render_inverted_message(video):
         "",
         "Go to [ / ] to check out other examples!",
         "",
+        "========================================",
+        "[Video Attribution]",
+        "Andy Goralczyk / Blender Foundation",
+        "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
+        "via Wikimedia Commons",
         "========================================"
     ])
 
@@ -241,7 +257,7 @@ def render_overlay_message(video):
     # Constants
     BOX_MARGIN = 10
     BOX_WIDTH = 540
-    BOX_HEIGHT = 440
+    BOX_HEIGHT = 520
     BOX_X_OFFSET = video.width-640
     BOX_Y_OFFSET = 24
 
@@ -279,6 +295,11 @@ def render_overlay_message(video):
         "",
         "Go to [ / ] to check out other examples!",
         "",
+        "========================================",
+        "[Video Attribution]",
+        "Andy Goralczyk / Blender Foundation",
+        "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
+        "via Wikimedia Commons",
         "========================================"
     ])
 
@@ -302,7 +323,7 @@ def render_custom_message(video):
     # Constants
     BOX_MARGIN = 10
     BOX_WIDTH = 540
-    BOX_HEIGHT = 280
+    BOX_HEIGHT = 360
     BOX_X_OFFSET = video.width-640
     BOX_Y_OFFSET = 24
 
@@ -332,5 +353,10 @@ def render_custom_message(video):
         "",
         "Go to [ / ] to check out other examples!",
         "",
+        "========================================",
+        "[Video Attribution]",
+        "Andy Goralczyk / Blender Foundation",
+        "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
+        "via Wikimedia Commons",
         "========================================"
     ])
