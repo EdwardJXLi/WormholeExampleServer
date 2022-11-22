@@ -245,7 +245,7 @@ def main():
         raise Exception("This Is A Test Error! "
                         "This error is intentional and is used to demonstrate error handling. "
                         "In this example, Wormhole gracefully captures the error "
-                        "and continues processing all other video streams with no isses.")
+                        "and continues processing all other video streams with no issues.")
 
     # Wormhole gracefully handles such error and continues on with all other streams
     error_video = CustomVideo(1920, 804, 100, error_generator)
@@ -273,6 +273,15 @@ def main():
 
     server.controller.add_route("/source", serve_source, methods=["GET"], strict_slashes=False)
     server.controller.add_route("/github", serve_source, methods=["GET"], strict_slashes=False)
+    
+    """
+    Generate (hidden) debug page
+    """
+    
+    def serve_debug():
+        return server.generate_debug_html()
+
+    server.controller.add_route("/debug", serve_debug, methods=["GET"], strict_slashes=False)
     
     # Join server thread to keep process alive
     server.join()
