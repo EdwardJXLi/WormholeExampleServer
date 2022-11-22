@@ -255,6 +255,8 @@ def main():
     Static Webpage Demo
     """
     
+    # Here is a basic example of serving a static webpage through Wormhole.
+    # It's not too exciting, but it's a good starting point for more complex webpages.
     def serve_static():
         return "This is just a plain static page hosted with Flask. " \
                "The only difference is that this is served through the " \
@@ -266,6 +268,8 @@ def main():
     Redirect to Github Page
     """
     
+    # Here, we use some more advanced flask routing features
+    # to redirect users to the source code of Wormhole
     from flask import redirect
     
     def serve_source():
@@ -278,6 +282,7 @@ def main():
     Generate (hidden) debug page
     """
     
+    # Cool debug page thats not publicly listed. Should be safe, i think...
     def serve_debug():
         return server.generate_debug_html()
 
