@@ -9,7 +9,7 @@ WORKDIR /server
 
 RUN pip3 install -r requirements.txt
 
-RUN wget https://upload.wikimedia.org/wikipedia/commons/a/a5/Spring_-_Blender_Open_Movie.webm -O /server/video.webm
+RUN wget https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a5/Spring_-_Blender_Open_Movie.webm/Spring_-_Blender_Open_Movie.webm.1080p.webm -O /server/video.webm
 
 USER wormhole:wormhole
 
