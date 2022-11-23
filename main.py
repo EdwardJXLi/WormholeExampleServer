@@ -144,18 +144,18 @@ def main():
     
     # We first create a hard copy of the video with half the resolution
     # This makes it so that the video is somewhat useable.
-    postprocessing_test_video = HardCopy(
-        video, 
-        video.width//2, 
-        video.height//2, 
-        frame_modifiers = [
-            circle_video_filter, 
-            wavy_image_filter, 
-            render_debug_info, 
-            render_fraps_fps,
-            render_advanced_message
-        ]) 
-    server.create_stream(MJPEGStreamer, postprocessing_test_video, '/postprocessing')
+    # postprocessing_test_video = HardCopy(
+    #     video, 
+    #     video.width//2, 
+    #     video.height//2, 
+    #     frame_modifiers = [
+    #         circle_video_filter, 
+    #         wavy_image_filter, 
+    #         render_debug_info, 
+    #         render_fraps_fps,
+    #         render_advanced_message
+    #     ]) 
+    # server.create_stream(MJPEGStreamer, postprocessing_test_video, '/postprocessing')
     
     """
     Video Overlaying Demo
