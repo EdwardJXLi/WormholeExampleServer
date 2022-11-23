@@ -1,4 +1,4 @@
-FROM python:3.11.0-slim
+FROM python:3.10.8-slim
 
 RUN set -eux; useradd wormhole -d /server;
 RUN apt-get update -y
