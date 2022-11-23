@@ -1,0 +1,8 @@
+version: '3.2'
+services:
+  wormhole-demo:
+    build: https://github.com/EdwardJXLi/WormholeExampleServer.git
+    container_name: wormhole-demo
+    restart: unless-stopped
+    ports:
+      - 8000:8000
