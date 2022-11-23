@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   wormhole-demo:
-    build: https://github.com/EdwardJXLi/WormholeExampleServer.git
+    build: https://github.com/EdwardJXLi/WormholeExampleServer.git#main
     container_name: wormhole-demo
     restart: unless-stopped
     ports:
