@@ -2,7 +2,7 @@ FROM python:3.11.0-slim
 
 RUN set -eux; useradd wormhole -d /server;
 RUN apt-get update -y
-RUN apt-get install -y wget libgl1 libglib2.0-0 libturbojpeg
+RUN apt-get install -y wget libgl1 libglib2.0-0 libturbojpeg0
 
 COPY . /server
 WORKDIR /server
