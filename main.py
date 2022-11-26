@@ -9,7 +9,6 @@ import numpy as np
 import math
 
 from wormhole import Wormhole
-from wormhole.streamer import MJPEGStreamer
 from wormhole.video import FileVideo, SoftCopy, HardCopy, CustomVideo
 from wormhole.utils import (
     render_fraps_fps, 
@@ -19,6 +18,7 @@ from wormhole.utils import (
     draw_overlay,
     blend_frames,
     draw_text)
+from turbofix import TurboMJPEGStreamer
 
 # Move message rendering to another file to save space
 from render_messages import (
@@ -64,7 +64,7 @@ def main():
             render_welcome_message])
     
     # This creates an alias to the "managed" default video stream.
-    server.create_stream(MJPEGStreamer, server.managed_streams.get("default", (None,))[0], '/')
+    server.create_stream(TurboMJPEGStreamer, server.managed_streams.get("default", (None,))[0], '/')
     
     """
     Load Video From File
@@ -82,7 +82,7 @@ def main():
     
     # This is all the code needed to stream to a custom url!
     # Raw unprocessed video stream as simple as that!
-    server.create_stream(MJPEGStreamer, video, '/original')
+    server.create_stream(TurboMJPEGStreamer, video, '/original')
     
     """
     Low Resolution Stream Demo
@@ -99,7 +99,7 @@ def main():
     # Here, we stream with custom imencode configs passed to the MJPEGStreamer.
     # In this instance, we are significantly dropping the quality of the video
     # to add to the crusty:tm: feel.
-    server.create_stream(MJPEGStreamer, lowres_video, '/lowres', imencode_config=[cv2.IMWRITE_JPEG_QUALITY, 50])
+    server.create_stream(TurboMJPEGStreamer, lowres_video, '/lowres', quality = 10)
     
     """
     Postprocessed Video Streams - Grayscale
@@ -118,7 +118,7 @@ def main():
     # Soft copies are realtime copies of the original video using
     # frame subscribes and publishers. This is better for light weight video modifications
     grayscale_video = SoftCopy(video, frame_modifiers = [render_debug_info, render_fraps_fps, grayscale_filter, render_grayscale_message])
-    server.create_stream(MJPEGStreamer, grayscale_video, '/grayscale')
+    server.create_stream(TurboMJPEGStreamer, grayscale_video, '/grayscale')
     
     """
     Postprocessed Video Streams - Inverted
@@ -130,7 +130,7 @@ def main():
         video._frame = (255 - video._frame)
         
     inverted_video = SoftCopy(video, frame_modifiers = [render_debug_info, render_fraps_fps]) 
-    server.create_stream(MJPEGStreamer, inverted_video, '/inverted')
+    server.create_stream(TurboMJPEGStreamer, inverted_video, '/inverted')
     # This filter is added in realtime!
     inverted_video.add_frame_modifier(invert_filter)
     inverted_video.add_frame_modifier(render_inverted_message)
@@ -155,7 +155,7 @@ def main():
     #         render_fraps_fps,
     #         render_advanced_message
     #     ]) 
-    # server.create_stream(MJPEGStreamer, postprocessing_test_video, '/postprocessing')
+    # server.create_stream(TurboMJPEGStreamer, postprocessing_test_video, '/postprocessing')
     
     """
     Video Overlaying Demo
@@ -201,7 +201,7 @@ def main():
             render_debug_info, 
             render_fraps_fps,
             render_overlay_message])
-    server.create_stream(MJPEGStreamer, overlay_video, '/overlay')
+    server.create_stream(TurboMJPEGStreamer, overlay_video, '/overlay')
     
     """
     Webcam Demo
@@ -234,7 +234,7 @@ def main():
     #     render_fraps_fps,
     #     render_custom_message
     # ])
-    # server.create_stream(MJPEGStreamer, custom_video, '/custom')
+    # server.create_stream(TurboMJPEGStreamer, custom_video, '/custom')
     
     """
     Error Handling Demo
@@ -249,7 +249,7 @@ def main():
 
     # Wormhole gracefully handles such error and continues on with all other streams
     error_video = CustomVideo(1920, 804, 100, error_generator)
-    server.create_stream(MJPEGStreamer, error_video, '/error')
+    server.create_stream(TurboMJPEGStreamer, error_video, '/error')
     
     """
     Static Webpage Demo
