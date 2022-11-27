@@ -63,7 +63,7 @@ def render_welcome_message(video):
         "",
         "========================================",
         "[Video Attribution]",
-        "Andy Goralczyk / Blender Foundation",
+        "Spring by Andy Goralczyk / Blender Foundation",
         "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
         "via Wikimedia Commons",
         "========================================"
@@ -109,6 +109,7 @@ def render_low_res_message(video):
         "",
         "================",
         "[Video Attribution]",
+        "Spring", 
         "Andy Goralczyk", 
         "Blender Foundation",
         "================"
@@ -154,7 +155,7 @@ def render_grayscale_message(video):
         "",
         "========================================",
         "[Video Attribution]",
-        "Andy Goralczyk / Blender Foundation",
+        "Spring by Andy Goralczyk / Blender Foundation",
         "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
         "via Wikimedia Commons",
         "========================================"
@@ -197,7 +198,7 @@ def render_inverted_message(video):
         "",
         "========================================",
         "[Video Attribution]",
-        "Andy Goralczyk / Blender Foundation",
+        "Spring by Andy Goralczyk / Blender Foundation",
         "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
         "via Wikimedia Commons",
         "========================================"
@@ -297,7 +298,7 @@ def render_overlay_message(video):
         "",
         "========================================",
         "[Video Attribution]",
-        "Andy Goralczyk / Blender Foundation",
+        "Spring by Andy Goralczyk / Blender Foundation",
         "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
         "via Wikimedia Commons",
         "========================================"
@@ -355,7 +356,7 @@ def render_custom_message(video):
         "",
         "========================================",
         "[Video Attribution]",
-        "Andy Goralczyk / Blender Foundation",
+        "Spring by Andy Goralczyk / Blender Foundation",
         "CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>",
         "via Wikimedia Commons",
         "========================================"

@@ -94,7 +94,7 @@ def main():
     # the original video.
     # We use this to create a low resolution and frame rate copy of
     # the original stream.
-    lowres_video = HardCopy(video, 640, 360, max_fps=1, frame_modifiers = [render_full_fps, render_fraps_fps, render_low_res_message])
+    lowres_video = HardCopy(video, 640, 360, max_fps=10, frame_modifiers = [render_full_fps, render_fraps_fps, render_low_res_message])
     
     # Here, we stream with custom imencode configs passed to the MJPEGStreamer.
     # In this instance, we are significantly dropping the quality of the video
