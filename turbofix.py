@@ -25,7 +25,7 @@ class TurboMJPEGStreamer(AbstractStreamer):
         self,
         *args,
         boundary: str = "WORMHOLE",
-        quality: int = 100,
+        quality: int = 85,
         **kwargs
     ):
         super().__init__(*args, **kwargs)
